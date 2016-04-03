@@ -64,6 +64,8 @@ public class Partie {
     
     public Coup demanderCoup(){
         Coup coup = joueurAutre.demanderCoup();
-        return joueurLocal.envoyerCoup(coup);
+        coup = joueurLocal.envoyerCoup(coup);
+        joueurAutre.sauvegarderCoup(coup);
+        return coup;
     }
 }

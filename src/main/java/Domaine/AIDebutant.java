@@ -119,8 +119,6 @@ public class AIDebutant implements Joueur{
             }
         } while(!ok);
         
-        sauvegarderCoup(coup);
-        
         return coup;
     }
 
