@@ -42,6 +42,14 @@ public class Coup {
         }
         return true;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 53 * hash + this.x;
+        hash = 53 * hash + this.y;
+        return hash;
+    }
     
     public int getX(){
         return this.x;
