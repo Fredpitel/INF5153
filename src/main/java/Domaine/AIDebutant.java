@@ -14,7 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class AIDebutant implements Joueur{
     final private ArrayList<Navire> navires;
-    final private ArrayList<Coup> listeCoups;
+    final protected ArrayList<Coup> listeCoups;
     private int naviresCoules = 0;
     
     public AIDebutant(){
