@@ -14,7 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class AIDebutant implements Joueur{
     final private ArrayList<Navire> navires;
-    final protected ArrayList<Coup> listeCoups;
+    final private ArrayList<Coup> listeCoups;
     private int naviresCoules = 0;
     
     public AIDebutant(){
@@ -117,5 +117,14 @@ public class AIDebutant implements Joueur{
     @Override
     public void sauvegarderCoup(Coup coup){
         listeCoups.add(coup);        
+    }
+    
+    protected Coup getCoupSauvegarder(Coup coupRecherche){
+        int index;
+        index = listeCoups.indexOf(coupRecherche);
+        if (index == -1){
+            return null;
+        }
+        return listeCoups.get(index);
     }
 }
