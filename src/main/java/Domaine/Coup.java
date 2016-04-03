@@ -24,9 +24,23 @@ public class Coup {
         this.y = y;
         resultat = res;
     }
-    
-    public boolean equals(Coup coup){
-        return(this.x == coup.x && this.y == coup.y);
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Coup other = (Coup) obj;
+        if (this.x != other.x) {
+            return false;
+        }
+        if (this.y != other.y) {
+            return false;
+        }
+        return true;
     }
     
     public int getX(){
