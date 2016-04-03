@@ -13,6 +13,10 @@ import java.util.ArrayList;
  */
 public class AIAvance extends AIDebutant{
     private ArrayList<Coup> navireEnemiTouche;
+
+    public AIAvance() {
+        this.navireEnemiTouche = new ArrayList<Coup>();
+    }
     
     @Override
     public Coup demanderCoup(){
