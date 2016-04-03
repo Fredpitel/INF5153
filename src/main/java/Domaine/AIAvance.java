@@ -11,31 +11,60 @@ import java.util.ArrayList;
  *
  * @author Frederic.Pitel
  */
-public class AIAvance implements Joueur{
-    final private ArrayList<Navire> navires;
-    final private ArrayList<Coup> listeCoups;
-    private int naviresCoules = 0;
-    
-    public AIAvance(){
-        navires = new ArrayList();
-        listeCoups = new ArrayList();
-    }
-    
-    @Override
-    public void placerNavire(int positionX, int positionY, int longueur, boolean tourne){
-    }
-    @Override
-    public Coup envoyerCoup(Coup coup){
-        return null;
-    }
+public class AIAvance extends AIDebutant{
+    private ArrayList<Coup> navireEnemiTouche;
     
     @Override
     public Coup demanderCoup(){
-        return null;
+        Coup coupSuivant;
+        if (!navireEnemiTouche.isEmpty()){
+            if (navireEnemiTouche.size() == 1){
+                return obtenirCoupAdjacent(navireEnemiTouche.get(0));
+            }
+            coupSuivant = obtenirCoupAdjacent(navireEnemiTouche.get(navireEnemiTouche.size() - 1));
+            if (coupSuivant == null){
+                coupSuivant = obtenirCoupAdjacent(navireEnemiTouche.get(0));
+            }
+            return coupSuivant;
+        }
+        return super.demanderCoup();
     }
+
+    
     
     @Override
     public void sauvegarderCoup(Coup coup){
-        listeCoups.add(coup);        
+        if (coup.getResultat() == Controleur.Partie.Resultat.TOUCHE){
+            navireEnemiTouche.add(coup);
+        } else if (coup.getResultat() == Controleur.Partie.Resultat.COULE){
+            navireEnemiTouche.clear();
+        }
+        super.sauvegarderCoup(coup);
+    }
+    
+    private Coup obtenirCoupAdjacent(Coup coupPrecedant) {
+        int tempIndex;
+        Coup coupSuivant;
+        tempIndex = coupPrecedant.getX() + 1;
+        coupSuivant = new Coup(tempIndex, coupPrecedant.getY());
+        if (tempIndex < 10 && !listeCoups.contains(coupSuivant)) {
+            return coupSuivant;
+        }
+        tempIndex = coupPrecedant.getX() - 1;
+        coupSuivant = new Coup(tempIndex, coupPrecedant.getY());
+        if (tempIndex >= 0 && !listeCoups.contains(coupSuivant)) {
+            return coupSuivant;
+        }
+        tempIndex = coupPrecedant.getY() + 1;
+        coupSuivant = new Coup(coupPrecedant.getX(), tempIndex);
+        if (tempIndex < 10 && !listeCoups.contains(coupSuivant)) {
+            return coupSuivant;
+        }
+        tempIndex = coupPrecedant.getY() - 1;
+        coupSuivant = new Coup(coupPrecedant.getX(), tempIndex);
+        if (tempIndex >= 0 && !listeCoups.contains(coupSuivant)) {
+            return coupSuivant;
+        }
+        return null;
     }
 }
