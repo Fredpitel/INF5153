@@ -106,18 +106,10 @@ public class AIDebutant implements Joueur{
     @Override
     public Coup demanderCoup(){
         Coup coup;
-        boolean ok;
         
         do{
-            ok = true;
             coup = new Coup(ThreadLocalRandom.current().nextInt(0, 10), ThreadLocalRandom.current().nextInt(0, 10));
-
-            for(Coup coupListe : listeCoups){
-                if(coup.equals(coupListe)){
-                    ok = false;
-                }
-            }
-        } while(!ok);
+        } while(listeCoups.contains(coup));
         
         return coup;
     }
