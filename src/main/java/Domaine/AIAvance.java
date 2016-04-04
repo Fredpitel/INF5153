@@ -5,31 +5,115 @@
  */
 package Domaine;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author Frederic.Pitel
  */
 public class AIAvance extends AIDebutant{
-    private ArrayList<Coup> navireEnemiTouche;
+    private Coup dernierNavireTouche;
 
     public AIAvance() {
-        this.navireEnemiTouche = new ArrayList<Coup>();
+        dernierNavireTouche = null;
     }
     
     @Override
     public Coup demanderCoup(){
         Coup coupSuivant;
-        if (!navireEnemiTouche.isEmpty()){
-            if (navireEnemiTouche.size() == 1){
-                return obtenirCoupAdjacent(navireEnemiTouche.get(0));
+        int tempIndex;
+        if (dernierNavireTouche != null){
+            tempIndex = dernierNavireTouche.getX() + 1;
+            coupSuivant = new Coup(tempIndex, dernierNavireTouche.getY());
+            if (tempIndex < 10 && this.getCoupSauvegarder(coupSuivant) != null && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
+                    || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE)){
+                do{
+                    tempIndex++;
+                    coupSuivant = new Coup(tempIndex, dernierNavireTouche.getY());
+                    if (tempIndex < 10 && this.getCoupSauvegarder(coupSuivant) == null){
+                        return coupSuivant;
+                    }
+                } while (tempIndex < 10 && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE 
+                        || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE));
+                
+                tempIndex = dernierNavireTouche.getX();
+                do{
+                    tempIndex--;
+                    coupSuivant = new Coup(tempIndex, dernierNavireTouche.getY());
+                    if (tempIndex >= 0 && this.getCoupSauvegarder(coupSuivant) == null){
+                        return coupSuivant;
+                    }
+                } while (tempIndex >= 0 && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE 
+                        || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE));
             }
-            coupSuivant = obtenirCoupAdjacent(navireEnemiTouche.get(navireEnemiTouche.size() - 1));
-            if (coupSuivant == null){
-                coupSuivant = obtenirCoupAdjacent(navireEnemiTouche.get(0));
+            tempIndex = dernierNavireTouche.getX() - 1;
+            coupSuivant = new Coup(tempIndex, dernierNavireTouche.getY());
+            if (tempIndex >= 0 && this.getCoupSauvegarder(coupSuivant) != null && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
+                    || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE)){
+                do{
+                    tempIndex--;
+                    coupSuivant = new Coup(tempIndex, dernierNavireTouche.getY());
+                    if (tempIndex >= 0 && this.getCoupSauvegarder(coupSuivant) == null){
+                        return coupSuivant;
+                    }
+                } while (tempIndex >= 0 && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
+                        || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE));
+                
+                tempIndex = dernierNavireTouche.getX();
+                do{
+                    tempIndex++;
+                    coupSuivant = new Coup(tempIndex, dernierNavireTouche.getY());
+                    if (tempIndex < 10 && this.getCoupSauvegarder(coupSuivant) == null){
+                        return coupSuivant;
+                    }
+                } while (tempIndex < 10 && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
+                        || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE));
             }
-            return coupSuivant;
+            tempIndex = dernierNavireTouche.getY() + 1;
+            coupSuivant = new Coup(dernierNavireTouche.getX(), tempIndex);
+            if (tempIndex < 10 && this.getCoupSauvegarder(coupSuivant) != null && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
+                    || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE)){
+                do{
+                    tempIndex++;
+                    coupSuivant = new Coup(dernierNavireTouche.getX(), tempIndex);
+                    if (tempIndex < 10 && this.getCoupSauvegarder(coupSuivant) == null){
+                        return coupSuivant;
+                    }
+                } while (tempIndex < 10 && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
+                        || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE));
+                
+                tempIndex = dernierNavireTouche.getY();
+                do{
+                    tempIndex--;
+                    coupSuivant = new Coup(dernierNavireTouche.getX(), tempIndex);
+                    if (tempIndex >= 0 && this.getCoupSauvegarder(coupSuivant) == null){
+                        return coupSuivant;
+                    }
+                } while (tempIndex >= 0 && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
+                        || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE));
+            }
+            tempIndex = dernierNavireTouche.getY() - 1;
+            coupSuivant = new Coup(dernierNavireTouche.getX(), tempIndex);
+            if (tempIndex >= 0 && this.getCoupSauvegarder(coupSuivant) != null && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
+                    || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE)){
+                do{
+                    tempIndex--;
+                    coupSuivant = new Coup(dernierNavireTouche.getX(), tempIndex);
+                    if (tempIndex >= 0 && this.getCoupSauvegarder(coupSuivant) == null){
+                        return coupSuivant;
+                    }
+                } while (tempIndex >= 0 && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
+                        || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE));
+                
+                tempIndex = dernierNavireTouche.getY();
+                do{
+                    tempIndex++;
+                    coupSuivant = new Coup(dernierNavireTouche.getX(), tempIndex);
+                    if (tempIndex < 10 && this.getCoupSauvegarder(coupSuivant) == null){
+                        return coupSuivant;
+                    }
+                } while (tempIndex < 10 && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
+                        || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE));
+            }
+            return obtenirCoupAdjacent(dernierNavireTouche);
         }
         return super.demanderCoup();
     }
@@ -39,9 +123,9 @@ public class AIAvance extends AIDebutant{
     @Override
     public void sauvegarderCoup(Coup coup){
         if (coup.getResultat() == Controleur.Partie.Resultat.TOUCHE){
-            navireEnemiTouche.add(coup);
+            dernierNavireTouche = coup;
         } else if (coup.getResultat() == Controleur.Partie.Resultat.COULE){
-            navireEnemiTouche.clear();
+            dernierNavireTouche = null;
         }
         super.sauvegarderCoup(coup);
     }
@@ -51,22 +135,22 @@ public class AIAvance extends AIDebutant{
         Coup coupSuivant;
         tempIndex = coupPrecedant.getX() + 1;
         coupSuivant = new Coup(tempIndex, coupPrecedant.getY());
-        if (tempIndex < 10 && !listeCoups.contains(coupSuivant)) {
+        if (tempIndex < 10 && this.getCoupSauvegarder(coupSuivant) == null) {
             return coupSuivant;
         }
         tempIndex = coupPrecedant.getX() - 1;
         coupSuivant = new Coup(tempIndex, coupPrecedant.getY());
-        if (tempIndex >= 0 && !listeCoups.contains(coupSuivant)) {
+        if (tempIndex >= 0 && this.getCoupSauvegarder(coupSuivant) == null) {
             return coupSuivant;
         }
         tempIndex = coupPrecedant.getY() + 1;
         coupSuivant = new Coup(coupPrecedant.getX(), tempIndex);
-        if (tempIndex < 10 && !listeCoups.contains(coupSuivant)) {
+        if (tempIndex < 10 && this.getCoupSauvegarder(coupSuivant) == null) {
             return coupSuivant;
         }
         tempIndex = coupPrecedant.getY() - 1;
         coupSuivant = new Coup(coupPrecedant.getX(), tempIndex);
-        if (tempIndex >= 0 && !listeCoups.contains(coupSuivant)) {
+        if (tempIndex >= 0 && this.getCoupSauvegarder(coupSuivant) == null) {
             return coupSuivant;
         }
         return null;
