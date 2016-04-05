@@ -10,16 +10,17 @@ package Domaine;
  * @author Frederic.Pitel
  */
 public class Coup {
+
     int x;
     int y;
     Controleur.Partie.Resultat resultat;
-    
-    public Coup(int x, int y){
+
+    public Coup(int x, int y) {
         this.x = x;
         this.y = y;
     }
-    
-    public Coup (int x, int y, Controleur.Partie.Resultat res){
+
+    public Coup(int x, int y, Controleur.Partie.Resultat res) {
         this.x = x;
         this.y = y;
         resultat = res;
@@ -47,16 +48,16 @@ public class Coup {
         hash = 53 * hash + this.y;
         return hash;
     }
-    
-    public int getX(){
+
+    public int getX() {
         return this.x;
     }
-    
-    public int getY(){
+
+    public int getY() {
         return this.y;
     }
-    
-    public Controleur.Partie.Resultat getResultat(){
+
+    public Controleur.Partie.Resultat getResultat() {
         return this.resultat;
     }
 }
