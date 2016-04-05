@@ -104,5 +104,11 @@
             </plugin>
         </plugins>
     </build>
-
+    <dependencies>
+        <dependency>
+            <groupId>javax.enterprise.deploy</groupId>
+            <artifactId>javax.enterprise.deploy-api</artifactId>
+            <version>1.6</version>
+        </dependency>
+    </dependencies>
 </project>
