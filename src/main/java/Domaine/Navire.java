@@ -52,4 +52,8 @@ public class Navire {
             return Controleur.Partie.Resultat.TOUCHE;
         }
     }
+    
+    public boolean getTourne(){
+        return tourne;
+    }
 }
