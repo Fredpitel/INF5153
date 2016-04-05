@@ -5,6 +5,8 @@
  */
 package Domaine;
 
+import Controleur.Partie;
+import Controleur.Partie.Resultat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,24 +34,24 @@ public class JoueurLocal implements Joueur {
 
     @Override
     public Coup envoyerCoup(Coup coup) {
-        coup.resultat = Controleur.Partie.Resultat.MANQUE;
+        coup.setResultat(Resultat.MANQUE);
 
         for (Navire nav : navires) {
             for (Case cas : nav.getCases()) {
                 if (cas.equals(coup)) {
-                    coup.resultat = nav.toucher(cas);
-                    if (coup.resultat == Controleur.Partie.Resultat.COULE) {
+                    coup.setResultat(nav.toucher(cas));
+                    if (coup.getResultat() == Resultat.COULE) {
                         naviresCoules++;
                     }
                     break;
                 }
             }
-            if (coup.resultat != Controleur.Partie.Resultat.MANQUE) {
+            if (coup.getResultat() != Resultat.MANQUE) {
                 break;
             }
         }
         if (naviresCoules == navires.size()) {
-            coup.resultat = Controleur.Partie.Resultat.TERMINE;
+            coup.setResultat(Resultat.TERMINE);
         }
 
         return coup;

@@ -5,22 +5,24 @@
  */
 package Domaine;
 
+import Controleur.Partie.Resultat;
+
 /**
  *
  * @author Frederic.Pitel
  */
 public class Coup {
 
-    int x;
-    int y;
-    Controleur.Partie.Resultat resultat;
+    private int x;
+    private int y;
+    private Resultat resultat;
 
     public Coup(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public Coup(int x, int y, Controleur.Partie.Resultat res) {
+    public Coup(int x, int y, Resultat res) {
         this.x = x;
         this.y = y;
         resultat = res;
@@ -57,7 +59,11 @@ public class Coup {
         return this.y;
     }
 
-    public Controleur.Partie.Resultat getResultat() {
+    public Resultat getResultat() {
         return this.resultat;
+    }
+    
+    public void setResultat(Resultat resultat) {
+        this.resultat = resultat;
     }
 }
