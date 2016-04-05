@@ -5,6 +5,8 @@
  */
 package Domaine;
 
+import Controleur.Partie.Resultat;
+
 /**
  *
  * @author Frederic.Pitel
@@ -24,16 +26,16 @@ public class AIAvance extends AIDebutant {
         if (dernierNavireTouche != null) {
             tempIndex = dernierNavireTouche.getX() + 1;
             coupSuivant = new Coup(tempIndex, dernierNavireTouche.getY());
-            if (tempIndex < 10 && this.getCoupSauvegarder(coupSuivant) != null && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
-                    || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE)) {
+            if (tempIndex < 10 && this.getCoupSauvegarder(coupSuivant) != null && (this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.TOUCHE
+                    || this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.COULE)) {
                 do {
                     tempIndex++;
                     coupSuivant = new Coup(tempIndex, dernierNavireTouche.getY());
                     if (tempIndex < 10 && this.getCoupSauvegarder(coupSuivant) == null) {
                         return coupSuivant;
                     }
-                } while (tempIndex < 10 && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
-                        || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE));
+                } while (tempIndex < 10 && (this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.TOUCHE
+                        || this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.COULE));
 
                 tempIndex = dernierNavireTouche.getX();
                 do {
@@ -42,21 +44,21 @@ public class AIAvance extends AIDebutant {
                     if (tempIndex >= 0 && this.getCoupSauvegarder(coupSuivant) == null) {
                         return coupSuivant;
                     }
-                } while (tempIndex >= 0 && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
-                        || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE));
+                } while (tempIndex >= 0 && (this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.TOUCHE
+                        || this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.COULE));
             }
             tempIndex = dernierNavireTouche.getX() - 1;
             coupSuivant = new Coup(tempIndex, dernierNavireTouche.getY());
-            if (tempIndex >= 0 && this.getCoupSauvegarder(coupSuivant) != null && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
-                    || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE)) {
+            if (tempIndex >= 0 && this.getCoupSauvegarder(coupSuivant) != null && (this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.TOUCHE
+                    || this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.COULE)) {
                 do {
                     tempIndex--;
                     coupSuivant = new Coup(tempIndex, dernierNavireTouche.getY());
                     if (tempIndex >= 0 && this.getCoupSauvegarder(coupSuivant) == null) {
                         return coupSuivant;
                     }
-                } while (tempIndex >= 0 && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
-                        || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE));
+                } while (tempIndex >= 0 && (this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.TOUCHE
+                        || this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.COULE));
 
                 tempIndex = dernierNavireTouche.getX();
                 do {
@@ -65,21 +67,21 @@ public class AIAvance extends AIDebutant {
                     if (tempIndex < 10 && this.getCoupSauvegarder(coupSuivant) == null) {
                         return coupSuivant;
                     }
-                } while (tempIndex < 10 && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
-                        || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE));
+                } while (tempIndex < 10 && (this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.TOUCHE
+                        || this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.COULE));
             }
             tempIndex = dernierNavireTouche.getY() + 1;
             coupSuivant = new Coup(dernierNavireTouche.getX(), tempIndex);
-            if (tempIndex < 10 && this.getCoupSauvegarder(coupSuivant) != null && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
-                    || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE)) {
+            if (tempIndex < 10 && this.getCoupSauvegarder(coupSuivant) != null && (this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.TOUCHE
+                    || this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.COULE)) {
                 do {
                     tempIndex++;
                     coupSuivant = new Coup(dernierNavireTouche.getX(), tempIndex);
                     if (tempIndex < 10 && this.getCoupSauvegarder(coupSuivant) == null) {
                         return coupSuivant;
                     }
-                } while (tempIndex < 10 && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
-                        || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE));
+                } while (tempIndex < 10 && (this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.TOUCHE
+                        || this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.COULE));
 
                 tempIndex = dernierNavireTouche.getY();
                 do {
@@ -88,21 +90,21 @@ public class AIAvance extends AIDebutant {
                     if (tempIndex >= 0 && this.getCoupSauvegarder(coupSuivant) == null) {
                         return coupSuivant;
                     }
-                } while (tempIndex >= 0 && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
-                        || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE));
+                } while (tempIndex >= 0 && (this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.TOUCHE
+                        || this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.COULE));
             }
             tempIndex = dernierNavireTouche.getY() - 1;
             coupSuivant = new Coup(dernierNavireTouche.getX(), tempIndex);
-            if (tempIndex >= 0 && this.getCoupSauvegarder(coupSuivant) != null && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
-                    || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE)) {
+            if (tempIndex >= 0 && this.getCoupSauvegarder(coupSuivant) != null && (this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.TOUCHE
+                    || this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.COULE)) {
                 do {
                     tempIndex--;
                     coupSuivant = new Coup(dernierNavireTouche.getX(), tempIndex);
                     if (tempIndex >= 0 && this.getCoupSauvegarder(coupSuivant) == null) {
                         return coupSuivant;
                     }
-                } while (tempIndex >= 0 && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
-                        || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE));
+                } while (tempIndex >= 0 && (this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.TOUCHE
+                        || this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.COULE));
 
                 tempIndex = dernierNavireTouche.getY();
                 do {
@@ -111,8 +113,8 @@ public class AIAvance extends AIDebutant {
                     if (tempIndex < 10 && this.getCoupSauvegarder(coupSuivant) == null) {
                         return coupSuivant;
                     }
-                } while (tempIndex < 10 && (this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.TOUCHE
-                        || this.getCoupSauvegarder(coupSuivant).resultat == Controleur.Partie.Resultat.COULE));
+                } while (tempIndex < 10 && (this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.TOUCHE
+                        || this.getCoupSauvegarder(coupSuivant).getResultat() == Resultat.COULE));
             }
             return obtenirCoupAdjacent(dernierNavireTouche);
         }

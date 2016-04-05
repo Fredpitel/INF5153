@@ -40,6 +40,6 @@ public class Case {
     }
 
     public boolean equals(Coup coup) {
-        return (coup.x == this.x && coup.y == this.y);
+        return (coup.getX() == this.x && coup.getY() == this.y);
     }
 }
