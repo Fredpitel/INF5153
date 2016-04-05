@@ -11,6 +11,7 @@ import Domaine.AIAvance;
 import Domaine.JoueurLocal;
 import Domaine.Case;
 import Domaine.Coup;
+import XML.SaveLoadXML;
 
 /**
  *
@@ -77,5 +78,10 @@ public class Partie {
         coup = joueurLocal.envoyerCoup(coup);
         joueurAutre.sauvegarderCoup(coup);
         return coup;
+    }
+    
+    public boolean sauvegarderPartie(){
+        SaveLoadXML saveloadXML = new SaveLoadXML();
+        return saveloadXML.sauvegarderPartie(joueurLocal, joueurAutre, difficulte);
     }
 }
