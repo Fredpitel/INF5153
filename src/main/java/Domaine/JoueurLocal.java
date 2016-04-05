@@ -69,4 +69,9 @@ public class JoueurLocal implements Joueur {
     public List<Navire> getListNavire(){
         return navires;
     }
+    
+    @Override
+    public List<Coup> getListCoup(){
+        return listeCoups;
+    }
 }

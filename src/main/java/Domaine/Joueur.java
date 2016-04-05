@@ -22,4 +22,6 @@ public abstract interface Joueur {
     public void sauvegarderCoup(Coup coup);
     
     public List<Navire> getListNavire();
+    
+    public List<Coup> getListCoup();
 }

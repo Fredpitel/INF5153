@@ -135,4 +135,9 @@ public class AIDebutant implements Joueur {
     public List<Navire> getListNavire(){
         return navires;
     }
+    
+    @Override
+    public List<Coup> getListCoup(){
+        return listeCoups;
+    }
 }
