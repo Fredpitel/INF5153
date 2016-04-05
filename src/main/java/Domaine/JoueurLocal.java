@@ -6,6 +6,7 @@
 package Domaine;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -62,5 +63,10 @@ public class JoueurLocal implements Joueur {
     @Override
     public void sauvegarderCoup(Coup coup) {
         listeCoups.add(coup);
+    }
+    
+    @Override
+    public List<Navire> getListNavire(){
+        return navires;
     }
 }

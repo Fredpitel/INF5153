@@ -6,6 +6,7 @@
 package Domaine;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -128,5 +129,10 @@ public class AIDebutant implements Joueur {
             return null;
         }
         return listeCoups.get(index);
+    }
+    
+    @Override
+    public List<Navire> getListNavire(){
+        return navires;
     }
 }

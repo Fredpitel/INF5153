@@ -5,6 +5,8 @@
  */
 package Domaine;
 
+import java.util.List;
+
 /**
  *
  * @author Frederic.Pitel
@@ -18,4 +20,6 @@ public abstract interface Joueur {
     public Coup demanderCoup();
 
     public void sauvegarderCoup(Coup coup);
+    
+    public List<Navire> getListNavire();
 }
