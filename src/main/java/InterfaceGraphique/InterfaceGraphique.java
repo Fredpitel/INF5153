@@ -292,6 +292,8 @@ public class InterfaceGraphique extends Application {
         
         menuPrincipal.setOnAction((e) ->{
             cases.clear();
+            caseAdverses.clear();
+            casesJouees.clear();
             listeNavires.clear();
             intersections.clear();
             afficherMenu();  
@@ -891,6 +893,8 @@ public class InterfaceGraphique extends Application {
 
         boutonFin.setOnMouseReleased((e) -> {
             cases.clear();
+            caseAdverses.clear();
+            casesJouees.clear();
             listeNavires.clear();
             intersections.clear();
             afficherMenu();
