@@ -90,6 +90,7 @@ public class SaveLoadXML {
             tourneNavire.setValue("" + nav.getTourne());
             elemNavire.setAttributeNode(positionNavireX);
             elemNavire.setAttributeNode(positionNavireY);
+            elemNavire.setAttributeNode(longueurNavire);
             elemNavire.setAttributeNode(tourneNavire);
             elemListNavire.appendChild(elemNavire);
             i++;
