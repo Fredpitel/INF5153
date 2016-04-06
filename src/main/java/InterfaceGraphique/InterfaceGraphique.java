@@ -273,6 +273,33 @@ public class InterfaceGraphique extends Application {
         partie.setPadding(new Insets(10, 30, 10, 30));
         BackgroundImage backPartie = new BackgroundImage(new Image("file:partie.jpg"), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
         partie.setBackground(new Background(backPartie));
+        
+        MenuBar menuBar = new MenuBar();
+        Menu menuMenu = new Menu("Menu");
+        menuBar.getMenus().add(menuMenu);
+        
+        MenuItem sauvegarderPartie = new MenuItem("Sauvegarder la partie");
+        MenuItem menuPrincipal = new MenuItem("Retourner au menu principal");
+        MenuItem menuQuitter = new MenuItem("Quitter");
+        
+        menuMenu.getItems().addAll(sauvegarderPartie, menuPrincipal, menuQuitter);
+        
+        partie.getChildren().add(menuBar);
+        
+        sauvegarderPartie.setOnAction((e) ->{
+            partiePrincipale.sauvegarderPartie();
+        });
+        
+        menuPrincipal.setOnAction((e) ->{
+            cases.clear();
+            listeNavires.clear();
+            intersections.clear();
+            afficherMenu();  
+        });
+        
+        menuQuitter.setOnAction((e) ->{
+            System.exit(0);
+        });
 
         Label labelJoueur = new Label("Amiral " + partiePrincipale.getNomUtilisateur());
         labelJoueur.setStyle("-fx-text-fill: black;"
@@ -863,6 +890,9 @@ public class InterfaceGraphique extends Application {
         partie.getChildren().add(boutonFin);
 
         boutonFin.setOnMouseReleased((e) -> {
+            cases.clear();
+            listeNavires.clear();
+            intersections.clear();
             afficherMenu();
         });
     }
