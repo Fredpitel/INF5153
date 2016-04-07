@@ -7,6 +7,7 @@ package XML;
 
 import Controleur.Partie.Difficulte;
 import Controleur.Partie.Resultat;
+import Domaine.AIAvance;
 import Domaine.AIDebutant;
 import Domaine.Coup;
 import Domaine.Joueur;
@@ -52,11 +53,27 @@ public class SaveLoadXML {
             Element elemJoueurLocal = doc.createElement("joueurLocal");
             elemJoueurLocal.appendChild(creerListeNavireXML(joueurLocal, doc));
             elemJoueurLocal.appendChild(creerListeCoupXML(joueurLocal, doc));
+            Attr nbNaviresCoules = doc.createAttribute("nbNaviresCoules");
+            nbNaviresCoules.setValue("" + joueurLocal.getNaviresCoules());
+            elemJoueurLocal.appendChild(nbNaviresCoules);
             racine.appendChild(elemJoueurLocal);
 
             Element elemJoueurAdversaire = doc.createElement("joueurAdversaire");
             elemJoueurAdversaire.appendChild(creerListeNavireXML(joueurLocal, doc));
             elemJoueurAdversaire.appendChild(creerListeCoupXML(joueurLocal, doc));
+            nbNaviresCoules = doc.createAttribute("nbNaviresCoules");
+            nbNaviresCoules.setValue("" + joueurAdversaire.getNaviresCoules());
+            elemJoueurAdversaire.appendChild(nbNaviresCoules);
+            if(diff == Difficulte.AVANCE){
+                Element dernierNavireTouche = doc.createElement("dernierNavireTouche");
+                Attr positionCoupX = doc.createAttribute("positionCoupX");
+                positionCoupX.setNodeValue("" + ((AIAvance)joueurAdversaire).getDernierNavireTouche().getX());
+                Attr positionCoupY = doc.createAttribute("positionCoupY");
+                positionCoupY.setNodeValue("" + ((AIAvance)joueurAdversaire).getDernierNavireTouche().getY());
+                dernierNavireTouche.setAttributeNode(positionCoupX);
+                dernierNavireTouche.setAttributeNode(positionCoupY);
+                elemJoueurAdversaire.appendChild(dernierNavireTouche);
+            }
             racine.appendChild(elemJoueurAdversaire);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -124,6 +141,7 @@ public class SaveLoadXML {
         Attr positionNavireY;
         Attr longueurNavire;
         Attr tourneNavire;
+        Attr caseToucheNavire;
 
         for (Navire nav : listeNavire) {
             elemNavire = doc.createElement("navire");
@@ -135,10 +153,13 @@ public class SaveLoadXML {
             longueurNavire.setValue("" + nav.getCases().size());
             tourneNavire = doc.createAttribute("tourneNavire");
             tourneNavire.setValue("" + nav.getTourne());
+            caseToucheNavire = doc.createAttribute("caseToucheNavire");
+            caseToucheNavire.setValue("" + nav.getCasesTouchees());
             elemNavire.setAttributeNode(positionNavireX);
             elemNavire.setAttributeNode(positionNavireY);
             elemNavire.setAttributeNode(longueurNavire);
             elemNavire.setAttributeNode(tourneNavire);
+            elemNavire.setAttributeNode(caseToucheNavire);
             elemListNavire.appendChild(elemNavire);
         }
 
