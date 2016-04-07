@@ -25,10 +25,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -71,6 +73,8 @@ public class SaveLoadXML {
                 positionCoupX.setNodeValue("" + ((AIAvance)joueurAdversaire).getDernierNavireTouche().getX());
                 Attr positionCoupY = doc.createAttribute("positionCoupY");
                 positionCoupY.setNodeValue("" + ((AIAvance)joueurAdversaire).getDernierNavireTouche().getY());
+                Attr resultatCoup = doc.createAttribute("resultatCoup");
+                resultatCoup.setNodeValue("" + ((AIAvance)joueurAdversaire).getDernierNavireTouche().getResultat());
                 dernierNavireTouche.setAttributeNode(positionCoupX);
                 dernierNavireTouche.setAttributeNode(positionCoupY);
                 elemJoueurAdversaire.appendChild(dernierNavireTouche);
@@ -111,11 +115,71 @@ public class SaveLoadXML {
     }
 
     public Joueur chargerJoueurLocal() {
-        return new JoueurLocal();
+        int naviresCoules;
+        List<Navire> listeNavire = new ArrayList<>();
+        List<Coup> listeCoup = new ArrayList<>();
+        try{
+            File fichierXml = new File(URL_FICHIER_XML);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fichierXml);
+            
+            Element eJoueur = (Element)doc.getElementsByTagName("joueurLocal").item(0);
+            naviresCoules = Integer.getInteger(eJoueur.getAttribute("nbNaviresCoules"));
+            
+            NodeList nList = ((Element)eJoueur.getElementsByTagName("listNavire")).getElementsByTagName("navire");
+            for (int i = 0; i < nList.getLength(); i++) {
+                listeNavire.add(elementXmlToNavire((Element)nList.item(i)));
+            }
+            
+            nList = ((Element)eJoueur.getElementsByTagName("elemListCoup")).getElementsByTagName("coup");
+            for (int i = 0; i < nList.getLength(); i++) {
+                listeCoup.add(elementXmlToCoup((Element)nList.item(i)));
+            }
+            
+            return new JoueurLocal(listeNavire, listeCoup, naviresCoules);
+        }catch(ParserConfigurationException | SAXException | IOException e){
+            return null;
+        }
     }
 
     public Joueur chargerJoueurAdversaire(Difficulte diff) {
-        return new AIDebutant();
+        int naviresCoules;
+        List<Navire> listeNavire = new ArrayList<>();
+        List<Coup> listeCoup = new ArrayList<>();
+        try{
+            File fichierXml = new File(URL_FICHIER_XML);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fichierXml);
+            
+            Element eJoueur = (Element)doc.getElementsByTagName("joueurAdversaire").item(0);
+            naviresCoules = Integer.getInteger(eJoueur.getAttribute("nbNaviresCoules"));
+            
+            NodeList nList = ((Element)eJoueur.getElementsByTagName("listNavire")).getElementsByTagName("navire");
+            for (int i = 0; i < nList.getLength(); i++) {
+                listeNavire.add(elementXmlToNavire((Element)nList.item(i)));
+            }
+            
+            nList = ((Element)eJoueur.getElementsByTagName("elemListCoup")).getElementsByTagName("coup");
+            for (int i = 0; i < nList.getLength(); i++) {
+                listeCoup.add(elementXmlToCoup((Element)nList.item(i)));
+            }
+            
+            if (diff == Difficulte.DEBUTANT){
+                return new AIDebutant(listeNavire, listeCoup, naviresCoules);
+            } else {
+                Coup caseToucheNavire = null;
+                nList = eJoueur.getElementsByTagName("dernierNavireTouche");
+                if (nList.getLength() > 0){
+                    caseToucheNavire = elementXmlToCoup((Element)nList.item(0));
+                }
+                return new AIAvance(listeNavire, listeCoup, naviresCoules, caseToucheNavire);
+            }
+        }catch(ParserConfigurationException | SAXException | IOException e){
+            return null;
+        }
+        
     }
     
     private Coup elementXmlToCoup(Element eCoup){

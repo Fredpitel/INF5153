@@ -33,7 +33,7 @@ public class Partie {
     }
 
     private String nomUtilisateur;
-    private final Difficulte difficulte;
+    private Difficulte difficulte;
     private static Joueur joueurLocal;
     private static Joueur joueurAutre;
 
@@ -83,5 +83,13 @@ public class Partie {
     public boolean sauvegarderPartie(){
         SaveLoadXML saveloadXML = new SaveLoadXML();
         return saveloadXML.sauvegarderPartie(joueurLocal, joueurAutre, difficulte);
+    }
+    
+    public boolean chargerPartie(){
+        SaveLoadXML saveloadXML = new SaveLoadXML();
+        difficulte = saveloadXML.chargerDifficulte();
+        joueurLocal = saveloadXML.chargerJoueurLocal();
+        joueurAutre = saveloadXML.chargerJoueurAdversaire(difficulte);
+        return joueurLocal != null && joueurAutre != null && difficulte != null;
     }
 }
