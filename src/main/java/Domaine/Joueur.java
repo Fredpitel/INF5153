@@ -24,4 +24,6 @@ public abstract interface Joueur {
     public List<Navire> getListNavire();
     
     public List<Coup> getListCoup();
+    
+    public int getNaviresCoules();
 }

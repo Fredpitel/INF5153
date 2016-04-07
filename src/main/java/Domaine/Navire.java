@@ -61,4 +61,8 @@ public class Navire {
     public boolean getTourne(){
         return tourne;
     }
+    
+    public int getCasesTouchees(){
+        return casesTouchees;
+    }
 }

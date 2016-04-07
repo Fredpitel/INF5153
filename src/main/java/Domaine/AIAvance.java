@@ -24,6 +24,10 @@ public class AIAvance extends AIDebutant {
         super(navires, listeCoups, naviresCoules);
         this.dernierNavireTouche = dernierNavireTouche;
     }
+    
+    public Coup getDernierNavireTouche(){
+        return dernierNavireTouche;
+    }
 
     @Override
     public Coup demanderCoup() {
