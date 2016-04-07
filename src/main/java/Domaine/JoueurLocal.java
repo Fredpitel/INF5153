@@ -5,7 +5,6 @@
  */
 package Domaine;
 
-import Controleur.Partie;
 import Controleur.Partie.Resultat;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ import java.util.List;
 public class JoueurLocal implements Joueur {
 
     final private ArrayList<Navire> navires;
-    private ArrayList<Coup> listeCoups;
+    private final ArrayList<Coup> listeCoups;
     private int naviresCoules = 0;
 
     public JoueurLocal() {

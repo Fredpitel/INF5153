@@ -6,6 +6,7 @@
 package XML;
 
 import Controleur.Partie.Difficulte;
+import Controleur.Partie.Resultat;
 import Domaine.AIDebutant;
 import Domaine.Coup;
 import Domaine.Joueur;
@@ -23,8 +24,6 @@ import org.w3c.dom.Element;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.w3c.dom.DOMException;
@@ -72,6 +71,51 @@ public class SaveLoadXML {
         return true;
     }
 
+    public Difficulte chargerDifficulte() {
+        try{
+            File fichierXml = new File(URL_FICHIER_XML);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fichierXml);
+            Element eDiff = (Element)doc.getElementsByTagName("partie").item(0);
+            String diff = eDiff.getAttribute("diff");
+            switch (diff) {
+                case "DEBUTANT":
+                    return Difficulte.DEBUTANT;
+                case "AVANCE":
+                    return Difficulte.AVANCE;
+                default:
+                    return null;
+            }
+        }catch(ParserConfigurationException | SAXException | IOException e){
+            return null;
+        }
+    }
+
+    public Joueur chargerJoueurLocal() {
+        return new JoueurLocal();
+    }
+
+    public Joueur chargerJoueurAdversaire(Difficulte diff) {
+        return new AIDebutant();
+    }
+    
+    private Coup elementXmlToCoup(Element eCoup){
+        int x = Integer.getInteger(eCoup.getAttribute("positionCoupX"));
+        int y = Integer.getInteger(eCoup.getAttribute("positionCoupY"));
+        String resultat = eCoup.getAttribute("resultatCoup");
+        switch (resultat) {
+            case "COULE":
+                return new Coup(x,y,Resultat.COULE);
+            case "MANQUE":
+                return new Coup(x,y,Resultat.MANQUE);
+            case "TOUCHE":
+                return new Coup(x,y,Resultat.TOUCHE);
+            default:
+                return new Coup(x,y,Resultat.TERMINE);
+        }
+    }
+    
     private Element creerListeNavireXML(Joueur joueur, Document doc) throws DOMException {
         Element elemListNavire = doc.createElement("listNavire");
         List<Navire> listeNavire = joueur.getListNavire();
@@ -124,33 +168,5 @@ public class SaveLoadXML {
         }
 
         return elemListCoup;
-    }
-
-    public Difficulte chargerDifficulte() {
-        try{
-            File fichierXml = new File(URL_FICHIER_XML);
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(fichierXml);
-            Element eDiff = (Element)doc.getElementsByTagName("partie").item(0);
-            String diff = eDiff.getAttribute("diff");
-            if("DEBUTANT".equals(diff)) {
-                return Difficulte.DEBUTANT;
-            }else if ("AVANCE".equals(diff)){
-                return Difficulte.AVANCE;
-            }else{
-                return null;
-            }
-        }catch(ParserConfigurationException | SAXException | IOException e){
-            return null;
-        }
-    }
-
-    public Joueur chargerJoueurLocal() {
-        return new JoueurLocal();
-    }
-
-    public Joueur chargerJoueurAdversaire(Difficulte diff) {
-        return new AIDebutant();
     }
 }
