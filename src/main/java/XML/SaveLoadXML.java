@@ -21,10 +21,14 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.w3c.dom.DOMException;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -126,8 +130,24 @@ public class SaveLoadXML {
         return elemListCoup;
     }
 
-    public Difficulte chargerDificulte() {
-        return Difficulte.DEBUTANT;
+    public Difficulte chargerDifficulte() {
+        try{
+            File fichierXml = new File(URL_FICHIER_XML);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fichierXml);
+            Element eDiff = (Element)doc.getElementsByTagName("partie").item(0);
+            String diff = eDiff.getAttribute("diff");
+            if("DEBUTANT".equals(diff)) {
+                return Difficulte.DEBUTANT;
+            }else if ("AVANCE".equals(diff)){
+                return Difficulte.AVANCE;
+            }else{
+                return null;
+            }
+        }catch(ParserConfigurationException | SAXException | IOException e){
+            return null;
+        }
     }
 
     public Joueur chargerJoueurLocal() {
