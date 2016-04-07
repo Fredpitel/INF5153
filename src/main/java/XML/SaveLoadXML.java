@@ -80,10 +80,9 @@ public class SaveLoadXML {
         Attr positionNavireY;
         Attr longueurNavire;
         Attr tourneNavire;
-        int i = 0;
 
         for (Navire nav : listeNavire) {
-            elemNavire = doc.createElement("navire" + i);
+            elemNavire = doc.createElement("navire");
             positionNavireX = doc.createAttribute("positionNavireX");
             positionNavireX.setValue("" + nav.getCases().get(0).getX());
             positionNavireY = doc.createAttribute("positionNavireY");
@@ -97,7 +96,6 @@ public class SaveLoadXML {
             elemNavire.setAttributeNode(longueurNavire);
             elemNavire.setAttributeNode(tourneNavire);
             elemListNavire.appendChild(elemNavire);
-            i++;
         }
 
         return elemListNavire;
@@ -110,10 +108,9 @@ public class SaveLoadXML {
         Attr positionCoupX;
         Attr positionCoupY;
         Attr resultatCoup;
-        int i = 0;
 
         for (Coup coup : listeCoup) {
-            elemCoup = doc.createElement("coup" + i);
+            elemCoup = doc.createElement("coup");
             positionCoupX = doc.createAttribute("positionCoupX");
             positionCoupX.setNodeValue("" + coup.getX());
             positionCoupY = doc.createAttribute("positionCoupY");
@@ -124,7 +121,6 @@ public class SaveLoadXML {
             elemCoup.setAttributeNode(positionCoupY);
             elemCoup.setAttributeNode(resultatCoup);
             elemListCoup.appendChild(elemCoup);
-            i++;
         }
 
         return elemListCoup;
