@@ -62,7 +62,7 @@ public class Coup {
     public Resultat getResultat() {
         return this.resultat;
     }
-    
+
     public void setResultat(Resultat resultat) {
         this.resultat = resultat;
     }

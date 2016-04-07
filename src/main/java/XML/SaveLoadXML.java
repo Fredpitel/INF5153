@@ -67,14 +67,14 @@ public class SaveLoadXML {
             nbNaviresCoules = doc.createAttribute("nbNaviresCoules");
             nbNaviresCoules.setValue("" + joueurAdversaire.getNaviresCoules());
             elemJoueurAdversaire.setAttributeNode(nbNaviresCoules);
-            if(diff == Difficulte.AVANCE && ((AIAvance)joueurAdversaire).getDernierNavireTouche() != null){
+            if (diff == Difficulte.AVANCE && ((AIAvance) joueurAdversaire).getDernierNavireTouche() != null) {
                 Element dernierNavireTouche = doc.createElement("dernierNavireTouche");
                 Attr positionCoupX = doc.createAttribute("positionCoupX");
-                positionCoupX.setNodeValue("" + ((AIAvance)joueurAdversaire).getDernierNavireTouche().getX());
+                positionCoupX.setNodeValue("" + ((AIAvance) joueurAdversaire).getDernierNavireTouche().getX());
                 Attr positionCoupY = doc.createAttribute("positionCoupY");
-                positionCoupY.setNodeValue("" + ((AIAvance)joueurAdversaire).getDernierNavireTouche().getY());
+                positionCoupY.setNodeValue("" + ((AIAvance) joueurAdversaire).getDernierNavireTouche().getY());
                 Attr resultatCoup = doc.createAttribute("resultatCoup");
-                resultatCoup.setNodeValue("" + ((AIAvance)joueurAdversaire).getDernierNavireTouche().getResultat());
+                resultatCoup.setNodeValue("" + ((AIAvance) joueurAdversaire).getDernierNavireTouche().getResultat());
                 dernierNavireTouche.setAttributeNode(positionCoupX);
                 dernierNavireTouche.setAttributeNode(positionCoupY);
                 elemJoueurAdversaire.appendChild(dernierNavireTouche);
@@ -94,12 +94,12 @@ public class SaveLoadXML {
     }
 
     public Difficulte chargerDifficulte() {
-        try{
+        try {
             File fichierXml = new File(URL_FICHIER_XML);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(fichierXml);
-            Element eDiff = (Element)doc.getElementsByTagName("partie").item(0);
+            Element eDiff = (Element) doc.getElementsByTagName("partie").item(0);
             String diff = eDiff.getAttribute("diff");
             switch (diff) {
                 case "DEBUTANT":
@@ -109,7 +109,7 @@ public class SaveLoadXML {
                 default:
                     return null;
             }
-        }catch(ParserConfigurationException | SAXException | IOException e){
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             return null;
         }
     }
@@ -118,27 +118,27 @@ public class SaveLoadXML {
         int naviresCoules;
         List<Navire> listeNavire = new ArrayList<>();
         List<Coup> listeCoup = new ArrayList<>();
-        try{
+        try {
             File fichierXml = new File(URL_FICHIER_XML);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(fichierXml);
-            
-            Element eJoueur = (Element)doc.getElementsByTagName("joueurLocal").item(0);
+
+            Element eJoueur = (Element) doc.getElementsByTagName("joueurLocal").item(0);
             naviresCoules = Integer.getInteger(eJoueur.getAttribute("nbNaviresCoules"));
-            
-            NodeList nList = ((Element)eJoueur.getElementsByTagName("listNavire")).getElementsByTagName("navire");
+
+            NodeList nList = ((Element) eJoueur.getElementsByTagName("listNavire")).getElementsByTagName("navire");
             for (int i = 0; i < nList.getLength(); i++) {
-                listeNavire.add(elementXmlToNavire((Element)nList.item(i)));
+                listeNavire.add(elementXmlToNavire((Element) nList.item(i)));
             }
-            
-            nList = ((Element)eJoueur.getElementsByTagName("elemListCoup")).getElementsByTagName("coup");
+
+            nList = ((Element) eJoueur.getElementsByTagName("elemListCoup")).getElementsByTagName("coup");
             for (int i = 0; i < nList.getLength(); i++) {
-                listeCoup.add(elementXmlToCoup((Element)nList.item(i)));
+                listeCoup.add(elementXmlToCoup((Element) nList.item(i)));
             }
-            
+
             return new JoueurLocal(listeNavire, listeCoup, naviresCoules);
-        }catch(ParserConfigurationException | SAXException | IOException e){
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             return null;
         }
     }
@@ -147,66 +147,66 @@ public class SaveLoadXML {
         int naviresCoules;
         List<Navire> listeNavire = new ArrayList<>();
         List<Coup> listeCoup = new ArrayList<>();
-        try{
+        try {
             File fichierXml = new File(URL_FICHIER_XML);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(fichierXml);
-            
-            Element eJoueur = (Element)doc.getElementsByTagName("joueurAdversaire").item(0);
+
+            Element eJoueur = (Element) doc.getElementsByTagName("joueurAdversaire").item(0);
             naviresCoules = Integer.getInteger(eJoueur.getAttribute("nbNaviresCoules"));
-            
-            NodeList nList = ((Element)eJoueur.getElementsByTagName("listNavire")).getElementsByTagName("navire");
+
+            NodeList nList = ((Element) eJoueur.getElementsByTagName("listNavire")).getElementsByTagName("navire");
             for (int i = 0; i < nList.getLength(); i++) {
-                listeNavire.add(elementXmlToNavire((Element)nList.item(i)));
+                listeNavire.add(elementXmlToNavire((Element) nList.item(i)));
             }
-            
-            nList = ((Element)eJoueur.getElementsByTagName("elemListCoup")).getElementsByTagName("coup");
+
+            nList = ((Element) eJoueur.getElementsByTagName("elemListCoup")).getElementsByTagName("coup");
             for (int i = 0; i < nList.getLength(); i++) {
-                listeCoup.add(elementXmlToCoup((Element)nList.item(i)));
+                listeCoup.add(elementXmlToCoup((Element) nList.item(i)));
             }
-            
-            if (diff == Difficulte.DEBUTANT){
+
+            if (diff == Difficulte.DEBUTANT) {
                 return new AIDebutant(listeNavire, listeCoup, naviresCoules);
             } else {
                 Coup caseToucheNavire = null;
                 nList = eJoueur.getElementsByTagName("dernierNavireTouche");
-                if (nList.getLength() > 0){
-                    caseToucheNavire = elementXmlToCoup((Element)nList.item(0));
+                if (nList.getLength() > 0) {
+                    caseToucheNavire = elementXmlToCoup((Element) nList.item(0));
                 }
                 return new AIAvance(listeNavire, listeCoup, naviresCoules, caseToucheNavire);
             }
-        }catch(ParserConfigurationException | SAXException | IOException e){
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             return null;
         }
-        
+
     }
-    
-    private Coup elementXmlToCoup(Element eCoup){
+
+    private Coup elementXmlToCoup(Element eCoup) {
         int x = Integer.getInteger(eCoup.getAttribute("positionCoupX"));
         int y = Integer.getInteger(eCoup.getAttribute("positionCoupY"));
         String resultat = eCoup.getAttribute("resultatCoup");
         switch (resultat) {
             case "COULE":
-                return new Coup(x,y,Resultat.COULE);
+                return new Coup(x, y, Resultat.COULE);
             case "MANQUE":
-                return new Coup(x,y,Resultat.MANQUE);
+                return new Coup(x, y, Resultat.MANQUE);
             case "TOUCHE":
-                return new Coup(x,y,Resultat.TOUCHE);
+                return new Coup(x, y, Resultat.TOUCHE);
             default:
-                return new Coup(x,y,Resultat.TERMINE);
+                return new Coup(x, y, Resultat.TERMINE);
         }
     }
-    
-    private Navire elementXmlToNavire(Element eNavire){
+
+    private Navire elementXmlToNavire(Element eNavire) {
         int longueur = Integer.getInteger(eNavire.getAttribute("longueurNavire"));
         int x = Integer.getInteger(eNavire.getAttribute("positionNavireX"));
         int y = Integer.getInteger(eNavire.getAttribute("positionNavireY"));
         boolean tourne = Boolean.getBoolean(eNavire.getAttribute("tourneNavire"));
         int casesTouchees = Integer.getInteger(eNavire.getAttribute("caseToucheNavire"));
-        return new Navire(longueur, new Case(x,y), tourne, casesTouchees);
+        return new Navire(longueur, new Case(x, y), tourne, casesTouchees);
     }
-    
+
     private Element creerListeNavireXML(Joueur joueur, Document doc) throws DOMException {
         Element elemListNavire = doc.createElement("listNavire");
         List<Navire> listeNavire = joueur.getListNavire();

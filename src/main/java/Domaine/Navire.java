@@ -39,9 +39,9 @@ public class Navire {
             }
         }
     }
-    
-    public Navire(int longueur, Case cases, boolean tourne, int casesTouchees){
-        this(longueur,cases,tourne);
+
+    public Navire(int longueur, Case cases, boolean tourne, int casesTouchees) {
+        this(longueur, cases, tourne);
         this.casesTouchees = casesTouchees;
     }
 
@@ -57,12 +57,12 @@ public class Navire {
             return Controleur.Partie.Resultat.TOUCHE;
         }
     }
-    
-    public boolean getTourne(){
+
+    public boolean getTourne() {
         return tourne;
     }
-    
-    public int getCasesTouchees(){
+
+    public int getCasesTouchees() {
         return casesTouchees;
     }
 }

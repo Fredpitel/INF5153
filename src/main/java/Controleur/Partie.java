@@ -17,7 +17,6 @@ import XML.SaveLoadXML;
  *
  * @author Frederic.Pitel
  */
-
 public class Partie {
 
     public static final int NOM_MAX = 20;
@@ -79,13 +78,13 @@ public class Partie {
         joueurAutre.sauvegarderCoup(coup);
         return coup;
     }
-    
-    public boolean sauvegarderPartie(){
+
+    public boolean sauvegarderPartie() {
         SaveLoadXML saveloadXML = new SaveLoadXML();
         return saveloadXML.sauvegarderPartie(joueurLocal, joueurAutre, difficulte);
     }
-    
-    public boolean chargerPartie(){
+
+    public boolean chargerPartie() {
         SaveLoadXML saveloadXML = new SaveLoadXML();
         difficulte = saveloadXML.chargerDifficulte();
         joueurLocal = saveloadXML.chargerJoueurLocal();

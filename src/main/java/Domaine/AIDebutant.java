@@ -63,7 +63,7 @@ public class AIDebutant implements Joueur {
         }
         assert (navires.size() == 5);
     }
-    
+
     public AIDebutant(List<Navire> navires, List<Coup> listeCoups, int naviresCoules) {
         this.listeCoups = listeCoups;
         this.navires = navires;
@@ -137,19 +137,19 @@ public class AIDebutant implements Joueur {
         }
         return listeCoups.get(index);
     }
-    
+
     @Override
-    public List<Navire> getListNavire(){
+    public List<Navire> getListNavire() {
         return navires;
     }
-    
+
     @Override
-    public List<Coup> getListCoup(){
+    public List<Coup> getListCoup() {
         return listeCoups;
     }
-    
+
     @Override
-    public int getNaviresCoules(){
+    public int getNaviresCoules() {
         return naviresCoules;
     }
 }

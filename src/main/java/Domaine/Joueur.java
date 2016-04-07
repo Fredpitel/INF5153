@@ -20,10 +20,10 @@ public abstract interface Joueur {
     public Coup demanderCoup();
 
     public void sauvegarderCoup(Coup coup);
-    
+
     public List<Navire> getListNavire();
-    
+
     public List<Coup> getListCoup();
-    
+
     public int getNaviresCoules();
 }

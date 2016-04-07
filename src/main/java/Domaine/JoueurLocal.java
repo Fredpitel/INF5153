@@ -23,7 +23,7 @@ public class JoueurLocal implements Joueur {
         this.navires = new ArrayList();
         this.listeCoups = new ArrayList();
     }
-    
+
     public JoueurLocal(List<Navire> navires, List<Coup> listeCoups, int naviresCoules) {
         this.listeCoups = listeCoups;
         this.navires = navires;
@@ -71,19 +71,19 @@ public class JoueurLocal implements Joueur {
     public void sauvegarderCoup(Coup coup) {
         listeCoups.add(coup);
     }
-    
+
     @Override
-    public List<Navire> getListNavire(){
+    public List<Navire> getListNavire() {
         return navires;
     }
-    
+
     @Override
-    public List<Coup> getListCoup(){
+    public List<Coup> getListCoup() {
         return listeCoups;
     }
-    
+
     @Override
-    public int getNaviresCoules(){
+    public int getNaviresCoules() {
         return naviresCoules;
     }
 }
