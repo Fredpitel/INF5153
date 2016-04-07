@@ -9,6 +9,7 @@ import Controleur.Partie.Difficulte;
 import Controleur.Partie.Resultat;
 import Domaine.AIAvance;
 import Domaine.AIDebutant;
+import Domaine.Case;
 import Domaine.Coup;
 import Domaine.Joueur;
 import Domaine.JoueurLocal;
@@ -131,6 +132,15 @@ public class SaveLoadXML {
             default:
                 return new Coup(x,y,Resultat.TERMINE);
         }
+    }
+    
+    private Navire elementXmlToNavire(Element eNavire){
+        int longueur = Integer.getInteger(eNavire.getAttribute("longueurNavire"));
+        int x = Integer.getInteger(eNavire.getAttribute("positionNavireX"));
+        int y = Integer.getInteger(eNavire.getAttribute("positionNavireY"));
+        boolean tourne = Boolean.getBoolean(eNavire.getAttribute("tourneNavire"));
+        int casesTouchees = Integer.getInteger(eNavire.getAttribute("caseToucheNavire"));
+        return new Navire(longueur, new Case(x,y), tourne, casesTouchees);
     }
     
     private Element creerListeNavireXML(Joueur joueur, Document doc) throws DOMException {
