@@ -39,6 +39,11 @@ public class Navire {
             }
         }
     }
+    
+    public Navire(int longueur, Case cases, boolean tourne, int casesTouchees){
+        this(longueur,cases,tourne);
+        this.casesTouchees = casesTouchees;
+    }
 
     public ArrayList<Case> getCases() {
         return this.cases;

@@ -16,8 +16,8 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class AIDebutant implements Joueur {
 
-    final private ArrayList<Navire> navires;
-    final private ArrayList<Coup> listeCoups;
+    final private List<Navire> navires;
+    final private List<Coup> listeCoups;
     private int naviresCoules = 0;
 
     public AIDebutant() {
@@ -62,6 +62,12 @@ public class AIDebutant implements Joueur {
             }
         }
         assert (navires.size() == 5);
+    }
+    
+    public AIDebutant(List<Navire> navires, List<Coup> listeCoups, int naviresCoules) {
+        this.listeCoups = listeCoups;
+        this.navires = navires;
+        this.naviresCoules = naviresCoules;
     }
 
     private boolean verifierCollision(Navire nav) {

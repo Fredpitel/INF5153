@@ -6,6 +6,7 @@
 package Domaine;
 
 import Controleur.Partie.Resultat;
+import java.util.List;
 
 /**
  *
@@ -17,6 +18,11 @@ public class AIAvance extends AIDebutant {
 
     public AIAvance() {
         dernierNavireTouche = null;
+    }
+    
+    public AIAvance(List<Navire> navires, List<Coup> listeCoups, int naviresCoules, Coup dernierNavireTouche) {
+        super(navires, listeCoups, naviresCoules);
+        this.dernierNavireTouche = dernierNavireTouche;
     }
 
     @Override

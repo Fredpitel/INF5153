@@ -15,13 +15,19 @@ import java.util.List;
  */
 public class JoueurLocal implements Joueur {
 
-    final private ArrayList<Navire> navires;
-    private final ArrayList<Coup> listeCoups;
+    final private List<Navire> navires;
+    private final List<Coup> listeCoups;
     private int naviresCoules = 0;
 
     public JoueurLocal() {
         this.navires = new ArrayList();
         this.listeCoups = new ArrayList();
+    }
+    
+    public JoueurLocal(List<Navire> navires, List<Coup> listeCoups, int naviresCoules) {
+        this.listeCoups = listeCoups;
+        this.navires = navires;
+        this.naviresCoules = naviresCoules;
     }
 
     @Override
