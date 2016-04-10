@@ -91,4 +91,12 @@ public class Partie {
         joueurAutre = saveloadXML.chargerJoueurAdversaire(difficulte);
         return joueurLocal != null && joueurAutre != null && difficulte != null;
     }
+    
+    public IteratorJoueur getIteratorJoueurLocal(){
+        return new IteratorJoueur(joueurLocal);
+    }
+    
+    public IteratorJoueur getIteratorAdversaire(){
+        return new IteratorJoueur(joueurAutre);
+    }
 }
