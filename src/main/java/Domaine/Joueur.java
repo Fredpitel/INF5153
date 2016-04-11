@@ -12,7 +12,11 @@ import java.util.List;
  * @author Frederic.Pitel
  */
 public abstract interface Joueur {
+    
+    public String getNomUtilisateur();
 
+    public void setNomUtilisateur(String nomUtilisateur);
+    
     public void placerNavire(int positionX, int positionY, int longueur, boolean tourne);
 
     public Coup envoyerCoup(Coup coup);

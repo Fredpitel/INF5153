@@ -18,8 +18,10 @@ public class AIDebutant implements Joueur {
 
     final private List<Navire> navires;
     final private List<Coup> listeCoups;
+    final private String nomUtilisateur = "Ennemi";
     private int naviresCoules = 0;
-
+    
+    
     public AIDebutant() {
         navires = new ArrayList();
         listeCoups = new ArrayList();
@@ -83,6 +85,16 @@ public class AIDebutant implements Joueur {
         return false;
     }
 
+    @Override
+    public String getNomUtilisateur(){
+        return nomUtilisateur;
+    }
+    
+    @Override
+    public void setNomUtilisateur(String nomUtilisateur){
+        
+    }
+    
     @Override
     public void placerNavire(int positionX, int positionY, int longueur, boolean tourne) {
 

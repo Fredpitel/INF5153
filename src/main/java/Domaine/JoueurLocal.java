@@ -18,18 +18,30 @@ public class JoueurLocal implements Joueur {
     final private List<Navire> navires;
     private final List<Coup> listeCoups;
     private int naviresCoules = 0;
+    private String nomUtilisateur = "";
 
     public JoueurLocal() {
         this.navires = new ArrayList();
         this.listeCoups = new ArrayList();
     }
 
-    public JoueurLocal(List<Navire> navires, List<Coup> listeCoups, int naviresCoules) {
+    public JoueurLocal(List<Navire> navires, List<Coup> listeCoups, int naviresCoules, String nomUtilisateur) {
         this.listeCoups = listeCoups;
         this.navires = navires;
         this.naviresCoules = naviresCoules;
+        this.nomUtilisateur = nomUtilisateur;
+    }
+    
+    @Override
+    public String getNomUtilisateur(){
+        return nomUtilisateur;
     }
 
+    @Override
+    public void setNomUtilisateur(String nomUtilisateur){
+        this.nomUtilisateur = nomUtilisateur;
+    }
+    
     @Override
     public void placerNavire(int positionX, int positionY, int longueur, boolean tourne) {
         Case cases = new Case(positionX, positionY);

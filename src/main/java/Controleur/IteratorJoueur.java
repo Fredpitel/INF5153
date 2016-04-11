@@ -36,19 +36,20 @@ public class IteratorJoueur {
     }
     
     public boolean prochainNavire(){
-        if (indexNavire >= listNavire.size()){
-            return false;
-        }
         indexNavire++;
-        return true;
+        return indexNavire < listNavire.size();
     }
     
     public Case getPositionNavire(){
-        return listNavire.get(indexNavire).getCases().get(0);
+        return ((listNavire.get(indexNavire)).getCases()).get(0);
     }
     
     public boolean getOrientationNavire(){
-        return listNavire.get(indexNavire).getTourne();
+        return (listNavire.get(indexNavire)).getTourne();
+    }
+    
+    public int getLongueurNavire(){
+        return (listNavire.get(indexNavire)).getLongueur();
     }
     
     public void debut(){

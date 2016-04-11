@@ -9,7 +9,6 @@ import Domaine.AIDebutant;
 import Domaine.Joueur;
 import Domaine.AIAvance;
 import Domaine.JoueurLocal;
-import Domaine.Case;
 import Domaine.Coup;
 import XML.SaveLoadXML;
 
@@ -31,7 +30,6 @@ public class Partie {
         TOUCHE, COULE, MANQUE, TERMINE
     }
 
-    private String nomUtilisateur;
     private Difficulte difficulte;
     private static Joueur joueurLocal;
     private static Joueur joueurAutre;
@@ -48,16 +46,19 @@ public class Partie {
         }
     }
 
+    public Partie(){
+    }
+    
     public Partie(Difficulte diff) {
         this.difficulte = diff;
     }
 
-    public void setNomUtilisateur(String nom) {
-        this.nomUtilisateur = nom;
-    }
-
     public String getNomUtilisateur() {
-        return this.nomUtilisateur;
+        return joueurLocal.getNomUtilisateur();
+    }
+    
+    public void setNomUtilisateur(String nomUtilisateur){
+        joueurLocal.setNomUtilisateur(nomUtilisateur);
     }
 
     public void placerNavire(int positionX, int positionY, int longueur, boolean tourne) {

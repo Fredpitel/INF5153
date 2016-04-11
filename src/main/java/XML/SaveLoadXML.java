@@ -40,7 +40,7 @@ import org.xml.sax.SAXException;
 public class SaveLoadXML {
 
     private final String URL_FICHIER_XML = "./sauvegarde.xml";
-
+    
     public boolean sauvegarderPartie(Joueur joueurLocal, Joueur joueurAdversaire, Difficulte diff) {
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -59,11 +59,14 @@ public class SaveLoadXML {
             Attr nbNaviresCoules = doc.createAttribute("nbNaviresCoules");
             nbNaviresCoules.setValue("" + joueurLocal.getNaviresCoules());
             elemJoueurLocal.setAttributeNode(nbNaviresCoules);
+            Attr nomUtilisateur = doc.createAttribute("nomUtilisateur");
+            nomUtilisateur.setValue(joueurLocal.getNomUtilisateur());
+            elemJoueurLocal.setAttributeNode(nomUtilisateur);
             racine.appendChild(elemJoueurLocal);
 
             Element elemJoueurAdversaire = doc.createElement("joueurAdversaire");
-            elemJoueurAdversaire.appendChild(creerListeNavireXML(joueurLocal, doc));
-            elemJoueurAdversaire.appendChild(creerListeCoupXML(joueurLocal, doc));
+            elemJoueurAdversaire.appendChild(creerListeNavireXML(joueurAdversaire, doc));
+            elemJoueurAdversaire.appendChild(creerListeCoupXML(joueurAdversaire, doc));
             nbNaviresCoules = doc.createAttribute("nbNaviresCoules");
             nbNaviresCoules.setValue("" + joueurAdversaire.getNaviresCoules());
             elemJoueurAdversaire.setAttributeNode(nbNaviresCoules);
@@ -116,6 +119,7 @@ public class SaveLoadXML {
 
     public Joueur chargerJoueurLocal() {
         int naviresCoules;
+        String nomUtilisateur;
         List<Navire> listeNavire = new ArrayList<>();
         List<Coup> listeCoup = new ArrayList<>();
         try {
@@ -125,19 +129,21 @@ public class SaveLoadXML {
             Document doc = dBuilder.parse(fichierXml);
 
             Element eJoueur = (Element) doc.getElementsByTagName("joueurLocal").item(0);
-            naviresCoules = Integer.getInteger(eJoueur.getAttribute("nbNaviresCoules"));
-
-            NodeList nList = ((Element) eJoueur.getElementsByTagName("listNavire")).getElementsByTagName("navire");
+            naviresCoules = Integer.parseInt(eJoueur.getAttribute("nbNaviresCoules"));
+            nomUtilisateur = eJoueur.getAttribute("nomUtilisateur");
+            
+            NodeList nList = eJoueur.getElementsByTagName("navire");
             for (int i = 0; i < nList.getLength(); i++) {
                 listeNavire.add(elementXmlToNavire((Element) nList.item(i)));
             }
 
-            nList = ((Element) eJoueur.getElementsByTagName("elemListCoup")).getElementsByTagName("coup");
+            nList = eJoueur.getElementsByTagName("coup");
             for (int i = 0; i < nList.getLength(); i++) {
                 listeCoup.add(elementXmlToCoup((Element) nList.item(i)));
             }
+            
 
-            return new JoueurLocal(listeNavire, listeCoup, naviresCoules);
+            return new JoueurLocal(listeNavire, listeCoup, naviresCoules, nomUtilisateur);
         } catch (ParserConfigurationException | SAXException | IOException e) {
             return null;
         }
@@ -154,14 +160,14 @@ public class SaveLoadXML {
             Document doc = dBuilder.parse(fichierXml);
 
             Element eJoueur = (Element) doc.getElementsByTagName("joueurAdversaire").item(0);
-            naviresCoules = Integer.getInteger(eJoueur.getAttribute("nbNaviresCoules"));
+            naviresCoules = Integer.parseInt(eJoueur.getAttribute("nbNaviresCoules"));
 
-            NodeList nList = ((Element) eJoueur.getElementsByTagName("listNavire")).getElementsByTagName("navire");
+            NodeList nList = eJoueur.getElementsByTagName("navire");
             for (int i = 0; i < nList.getLength(); i++) {
                 listeNavire.add(elementXmlToNavire((Element) nList.item(i)));
             }
 
-            nList = ((Element) eJoueur.getElementsByTagName("elemListCoup")).getElementsByTagName("coup");
+            nList = eJoueur.getElementsByTagName("coup");
             for (int i = 0; i < nList.getLength(); i++) {
                 listeCoup.add(elementXmlToCoup((Element) nList.item(i)));
             }
@@ -183,8 +189,8 @@ public class SaveLoadXML {
     }
 
     private Coup elementXmlToCoup(Element eCoup) {
-        int x = Integer.getInteger(eCoup.getAttribute("positionCoupX"));
-        int y = Integer.getInteger(eCoup.getAttribute("positionCoupY"));
+        int x = Integer.parseInt(eCoup.getAttribute("positionCoupX"));
+        int y = Integer.parseInt(eCoup.getAttribute("positionCoupY"));
         String resultat = eCoup.getAttribute("resultatCoup");
         switch (resultat) {
             case "COULE":
@@ -199,11 +205,11 @@ public class SaveLoadXML {
     }
 
     private Navire elementXmlToNavire(Element eNavire) {
-        int longueur = Integer.getInteger(eNavire.getAttribute("longueurNavire"));
-        int x = Integer.getInteger(eNavire.getAttribute("positionNavireX"));
-        int y = Integer.getInteger(eNavire.getAttribute("positionNavireY"));
-        boolean tourne = Boolean.getBoolean(eNavire.getAttribute("tourneNavire"));
-        int casesTouchees = Integer.getInteger(eNavire.getAttribute("caseToucheNavire"));
+        int longueur = Integer.parseInt(eNavire.getAttribute("longueurNavire"));
+        int x = Integer.parseInt(eNavire.getAttribute("positionNavireX"));
+        int y = Integer.parseInt(eNavire.getAttribute("positionNavireY"));
+        boolean tourne = Boolean.parseBoolean(eNavire.getAttribute("tourneNavire"));
+        int casesTouchees = Integer.parseInt(eNavire.getAttribute("caseToucheNavire"));
         return new Navire(longueur, new Case(x, y), tourne, casesTouchees);
     }
 

@@ -50,6 +50,7 @@ public class InterfaceGraphique extends Application {
     private static Partie partiePrincipale;
     private static Boolean click = false;
     private static Label labelTour;
+    private boolean premierNavire = true;
 
     final ArrayList<Case> cases = new ArrayList();
     final ArrayList<Case> caseAdverses = new ArrayList();
@@ -84,7 +85,7 @@ public class InterfaceGraphique extends Application {
     }
 
     public void afficherPartie() {
-        scenePartie = creerPartie();
+        scenePartie = creerPartie(true);
         stage.setScene(scenePartie);
         stage.setFullScreen(true);
     }
@@ -239,7 +240,32 @@ public class InterfaceGraphique extends Application {
         });
 
         chargerPartie.setOnAction((e) -> {
-            //TODO
+            partiePrincipale = new Partie();
+            
+            partiePrincipale.chargerPartie();
+            
+            IteratorJoueur iterJoueur = partiePrincipale.getIteratorJoueurLocal();
+            IteratorJoueur iterAdv = partiePrincipale.getIteratorAdversaire();
+                       
+            scenePartie = creerPartie(false);
+            
+            placerNavires(iterJoueur);
+            
+            jouerCoups(iterJoueur, true);
+            jouerCoups(iterAdv, false);
+            
+            for(Case cas : caseAdverses){
+                cas.setMouseTransparent(false);
+            }
+            
+            for(ImageNavire nav : listeNavires){
+                nav.setMouseTransparent(true);
+            }
+            
+            labelTour.setVisible(true);
+            
+            stage.setScene(scenePartie);
+            stage.setFullScreen(true);
         });
 
         quitter.setOnAction((e) -> {
@@ -267,8 +293,126 @@ public class InterfaceGraphique extends Application {
 
         return sceneMenuTemp;
     }
+    
+    private void placerNavires(IteratorJoueur iterJoueur){            
+        do{
+            switch(iterJoueur.getLongueurNavire()){
+                case 2:
+                    Image chaloupe;
+                    if(iterJoueur.getOrientationNavire()){
+                        chaloupe = new Image("file:chaloupeTourne.png");
+                    } else {
+                        chaloupe = new Image("file:chaloupe.png");
+                    }
+                    ImageNavire ivch = new ImageNavire(chaloupe);
+                    ivch.longueur = 4;
+                    listeNavires.add(ivch);
+                    AnchorPane.setTopAnchor(ivch, (50.0 + (80 * iterJoueur.getPositionNavire().getX())));
+                    AnchorPane.setLeftAnchor(ivch, (50.0 + (80 * iterJoueur.getPositionNavire().getY())));
+                    partie.getChildren().add(ivch);
+                    break;
+                case 3:
+                    if(premierNavire){
+                        Image sousmarin;
+                        if(iterJoueur.getOrientationNavire()){
+                            sousmarin = new Image("file:sousmarinTourne.png");
+                        } else {
+                            sousmarin = new Image("file:sousmarin.png");
+                        }
+                        ImageNavire ivsm = new ImageNavire(sousmarin);
+                        ivsm.longueur = 3;
+                        listeNavires.add(ivsm);
+                        AnchorPane.setTopAnchor(ivsm, (50.0 + (80 * iterJoueur.getPositionNavire().getX())));
+                        AnchorPane.setLeftAnchor(ivsm, (50.0 + (80 * iterJoueur.getPositionNavire().getY())));
+                        partie.getChildren().add(ivsm);
+                        premierNavire = false;
+                    } else {
+                        Image cruiser;
+                        if(iterJoueur.getOrientationNavire()){
+                            cruiser = new Image("file:cruiserTourne.png");
+                        } else {
+                            cruiser = new Image("file:cruiser.png");
+                        }
+                        ImageNavire ivc = new ImageNavire(cruiser);
+                        ivc.longueur = 3;
+                        listeNavires.add(ivc);
+                        AnchorPane.setTopAnchor(ivc, (50.0 + (80 * iterJoueur.getPositionNavire().getX())));
+                        AnchorPane.setLeftAnchor(ivc, (50.0 + (80 * iterJoueur.getPositionNavire().getY())));
+                        partie.getChildren().add(ivc);
+                        premierNavire = true;
+                    }
+                    break;
+                case 4:
+                    Image destroyer;
+                    if(iterJoueur.getOrientationNavire()){
+                        destroyer = new Image("file:destroyerTourne.png");
+                    } else {
+                        destroyer = new Image("file:destroyer.png");
+                    }
+                    ImageNavire ivd = new ImageNavire(destroyer);
+                    ivd.longueur = 4;
+                    listeNavires.add(ivd);
+                    AnchorPane.setTopAnchor(ivd, (50.0 + (80 * iterJoueur.getPositionNavire().getX())));
+                    AnchorPane.setLeftAnchor(ivd, (50.0 + (80 * iterJoueur.getPositionNavire().getY())));
+                    partie.getChildren().add(ivd);
+                    break;
+                case 5:
+                    Image porteAvion;
+                    if(iterJoueur.getOrientationNavire()){
+                        porteAvion = new Image("file:porteavionTourne.png");
+                    } else {
+                        porteAvion = new Image("file:porteavion.png");
+                    }
+                    ImageNavire ivpa = new ImageNavire(porteAvion);
+                    ivpa.longueur = 5;
+                    listeNavires.add(ivpa);
+                    AnchorPane.setTopAnchor(ivpa, (50.0 + (80 * iterJoueur.getPositionNavire().getX())));
+                    AnchorPane.setLeftAnchor(ivpa, (50.0 + (80 * iterJoueur.getPositionNavire().getY())));
+                    partie.getChildren().add(ivpa);
+                    break;
+                default:
+                    System.exit(1);
+            }
+        } while(iterJoueur.prochainNavire());
+    }
+    
+    private void jouerCoups(IteratorJoueur iterJoueur, boolean joueurLocal){
+        Coup coup = iterJoueur.prochainCoup();
+        while(coup != null) {
+            ImageView iv;
 
-    public Scene creerPartie() {
+            if (coup.getResultat() == Partie.Resultat.MANQUE) {
+                Image image = new Image("file:rater.png");
+                iv = new ImageView(image);
+            } else {
+                Image image = new Image("file:toucher.png");
+                iv = new ImageView(image);
+            }
+
+            Case caseChoisie = null;
+            for(Case cas : cases){
+                if(cas.x == coup.getX() && cas.y == coup.getY()){
+                    caseChoisie = cas;
+                    break;
+                }
+            }
+            
+            AnchorPane.setTopAnchor(iv, (50.0 + (80 * caseChoisie.x)));
+            if(joueurLocal){
+                AnchorPane.setRightAnchor(iv, (50.0 + (80 * caseChoisie.y)));
+                casesJouees.add(caseChoisie);
+            } else {
+                AnchorPane.setLeftAnchor(iv, (50.0 + (80 * caseChoisie.y)));                
+            }
+            
+            partie.getChildren().add(iv);
+            caseChoisie.setMouseTransparent(true);
+
+            coup = iterJoueur.prochainCoup();
+        }
+    }
+
+    public Scene creerPartie(boolean nouvellePartie) {
         partie = new AnchorPane();
         partie.setPadding(new Insets(10, 30, 10, 30));
         BackgroundImage backPartie = new BackgroundImage(new Image("file:partie.jpg"), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
@@ -302,8 +446,10 @@ public class InterfaceGraphique extends Application {
         menuQuitter.setOnAction((e) -> {
             System.exit(0);
         });
+        
 
-        Label labelJoueur = new Label("Amiral " + partiePrincipale.getNomUtilisateur());
+        Label labelJoueur = new Label();
+        labelJoueur.setText("Amiral " + partiePrincipale.getNomUtilisateur());
         labelJoueur.setStyle("-fx-text-fill: black;"
                 + "-fx-font: 30 stencil;"
                 + "-fx-background-color: lightgrey;"
@@ -373,99 +519,6 @@ public class InterfaceGraphique extends Application {
         AnchorPane.setLeftAnchor(boiteNavires, 100.0);
         partie.getChildren().add(boiteNavires);
 
-        Image porteAvion = new Image("file:porteavion.png");
-        ImageNavire ivpa = new ImageNavire(porteAvion);
-        ivpa.longueur = 5;
-        listeNavires.add(ivpa);
-        enableDrag(ivpa);
-        AnchorPane.setBottomAnchor(ivpa, 100.0);
-        AnchorPane.setLeftAnchor(ivpa, 150.0);
-        partie.getChildren().add(ivpa);
-
-        Image destroyer = new Image("file:destroyer.png");
-        ImageNavire ivd = new ImageNavire(destroyer);
-        ivd.longueur = 4;
-        listeNavires.add(ivd);
-        enableDrag(ivd);
-        AnchorPane.setBottomAnchor(ivd, 100.0);
-        AnchorPane.setLeftAnchor(ivd, 600.0);
-        partie.getChildren().add(ivd);
-
-        Image sousmarin = new Image("file:sousmarin.png");
-        ImageNavire ivsm = new ImageNavire(sousmarin);
-        listeNavires.add(ivsm);
-        ivsm.longueur = 3;
-        enableDrag(ivsm);
-        AnchorPane.setBottomAnchor(ivsm, 100.0);
-        AnchorPane.setLeftAnchor(ivsm, 950.0);
-        partie.getChildren().add(ivsm);
-
-        Image cruiser = new Image("file:cruiser.png");
-        ImageNavire ivc = new ImageNavire(cruiser);
-        listeNavires.add(ivc);
-        enableDrag(ivc);
-        ivc.longueur = 3;
-        AnchorPane.setBottomAnchor(ivc, 100.0);
-        AnchorPane.setLeftAnchor(ivc, 1250.0);
-        partie.getChildren().add(ivc);
-
-        Image chaloupe = new Image("file:chaloupe.png");
-        ImageNavire ivch = new ImageNavire(chaloupe);
-        listeNavires.add(ivch);
-        enableDrag(ivch);
-        ivch.longueur = 2;
-        AnchorPane.setBottomAnchor(ivch, 100.0);
-        AnchorPane.setLeftAnchor(ivch, 1550.0);
-        partie.getChildren().add(ivch);
-
-        Label labelInstructions = new Label("Appuyez sur SHIFT pour changer l'orientation du navire selectionné");
-        labelInstructions.setStyle("-fx-text-fill: black;"
-                + "-fx-font: 25 stencil");
-        AnchorPane.setBottomAnchor(labelInstructions, 30.0);
-        AnchorPane.setLeftAnchor(labelInstructions, 300.0);
-        partie.getChildren().add(labelInstructions);
-
-        Button confirmer = new Button("Confirmer");
-        confirmer.setMaxWidth(400);
-        confirmer.setStyle("-fx-text-fill: black;"
-                + "-fx-font: 25 stencil;"
-                + "-fx-background-color: lightgrey;"
-                + "-fx-border-style: solid;"
-                + "-fx-border-width: 5;"
-                + "-fx-focus-color: tranparent;"
-                + "-fx-faint-focus-color: transparent");
-        AnchorPane.setBottomAnchor(confirmer, 20.0);
-        AnchorPane.setLeftAnchor(confirmer, 1300.0);
-        partie.getChildren().add(confirmer);
-
-        Label erreurLabel = new Label(" Veuillez placer tous vos navires à l'intérieur de la grille. ");
-        erreurLabel.setStyle("-fx-text-fill: black;"
-                + "-fx-font: 40 stencil;"
-                + "-fx-background-color: lightgrey;"
-                + "-fx-border-style: solid;"
-                + "-fx-border-width: 5;"
-                + "-fx-focus-color: tranparent;"
-                + "-fx-faint-focus-color: transparent");
-        erreurLabel.setVisible(false);
-        erreurLabel.setPrefHeight(200);
-        AnchorPane.setTopAnchor(erreurLabel, 500.0);
-        AnchorPane.setLeftAnchor(erreurLabel, 285.0);
-        partie.getChildren().add(erreurLabel);
-
-        Button erreurBouton = new Button("OK");
-        erreurBouton.setMaxWidth(400);
-        erreurBouton.setStyle("-fx-text-fill: black;"
-                + "-fx-font: 25 stencil;"
-                + "-fx-background-color: lightgrey;"
-                + "-fx-border-style: solid;"
-                + "-fx-border-width: 5;"
-                + "-fx-focus-color: tranparent;"
-                + "-fx-faint-focus-color: transparent");
-        AnchorPane.setTopAnchor(erreurBouton, 625.0);
-        AnchorPane.setLeftAnchor(erreurBouton, 900.0);
-        erreurBouton.setVisible(false);
-        partie.getChildren().add(erreurBouton);
-
         labelTour = new Label("À votre tour Amiral");
         labelTour.setStyle("-fx-text-fill: black;"
                 + "-fx-font: 40 stencil;"
@@ -476,101 +529,196 @@ public class InterfaceGraphique extends Application {
         AnchorPane.setLeftAnchor(labelTour, 700.0);
         labelTour.setVisible(false);
         partie.getChildren().add(labelTour);
-
+        
         Scene scenePartieTemp = new Scene(partie, Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());
+        
+        if(nouvellePartie){
+            Image porteAvion = new Image("file:porteavion.png");
+            ImageNavire ivpa = new ImageNavire(porteAvion);
+            ivpa.longueur = 5;
+            listeNavires.add(ivpa);
+            enableDrag(ivpa);
+            AnchorPane.setBottomAnchor(ivpa, 100.0);
+            AnchorPane.setLeftAnchor(ivpa, 150.0);
+            partie.getChildren().add(ivpa);
 
-        confirmer.setOnMouseClicked((e) -> {
-            boolean ok = true;
+            Image destroyer = new Image("file:destroyer.png");
+            ImageNavire ivd = new ImageNavire(destroyer);
+            ivd.longueur = 4;
+            listeNavires.add(ivd);
+            enableDrag(ivd);
+            AnchorPane.setBottomAnchor(ivd, 100.0);
+            AnchorPane.setLeftAnchor(ivd, 600.0);
+            partie.getChildren().add(ivd);
 
-            for (ImageNavire nav : listeNavires) {
-                if (nav.cases.size() < nav.longueur) {
-                    ok = false;
-                }
-            }
+            Image sousmarin = new Image("file:sousmarin.png");
+            ImageNavire ivsm = new ImageNavire(sousmarin);
+            listeNavires.add(ivsm);
+            ivsm.longueur = 3;
+            enableDrag(ivsm);
+            AnchorPane.setBottomAnchor(ivsm, 100.0);
+            AnchorPane.setLeftAnchor(ivsm, 950.0);
+            partie.getChildren().add(ivsm);
 
-            if (ok) {
+            Image cruiser = new Image("file:cruiser.png");
+            ImageNavire ivc = new ImageNavire(cruiser);
+            listeNavires.add(ivc);
+            enableDrag(ivc);
+            ivc.longueur = 3;
+            AnchorPane.setBottomAnchor(ivc, 100.0);
+            AnchorPane.setLeftAnchor(ivc, 1250.0);
+            partie.getChildren().add(ivc);
+
+            Image chaloupe = new Image("file:chaloupe.png");
+            ImageNavire ivch = new ImageNavire(chaloupe);
+            listeNavires.add(ivch);
+            enableDrag(ivch);
+            ivch.longueur = 2;
+            AnchorPane.setBottomAnchor(ivch, 100.0);
+            AnchorPane.setLeftAnchor(ivch, 1550.0);
+            partie.getChildren().add(ivch);
+       
+            Label labelInstructions = new Label("Appuyez sur SHIFT pour changer l'orientation du navire selectionné");
+            labelInstructions.setStyle("-fx-text-fill: black;"
+                    + "-fx-font: 25 stencil");
+            AnchorPane.setBottomAnchor(labelInstructions, 30.0);
+            AnchorPane.setLeftAnchor(labelInstructions, 300.0);
+            partie.getChildren().add(labelInstructions);
+
+            Button confirmer = new Button("Confirmer");
+            confirmer.setMaxWidth(400);
+            confirmer.setStyle("-fx-text-fill: black;"
+                    + "-fx-font: 25 stencil;"
+                    + "-fx-background-color: lightgrey;"
+                    + "-fx-border-style: solid;"
+                    + "-fx-border-width: 5;"
+                    + "-fx-focus-color: tranparent;"
+                    + "-fx-faint-focus-color: transparent");
+            AnchorPane.setBottomAnchor(confirmer, 20.0);
+            AnchorPane.setLeftAnchor(confirmer, 1300.0);
+            partie.getChildren().add(confirmer);
+
+            Label erreurLabel = new Label(" Veuillez placer tous vos navires à l'intérieur de la grille. ");
+            erreurLabel.setStyle("-fx-text-fill: black;"
+                    + "-fx-font: 40 stencil;"
+                    + "-fx-background-color: lightgrey;"
+                    + "-fx-border-style: solid;"
+                    + "-fx-border-width: 5;"
+                    + "-fx-focus-color: tranparent;"
+                    + "-fx-faint-focus-color: transparent");
+            erreurLabel.setVisible(false);
+            erreurLabel.setPrefHeight(200);
+            AnchorPane.setTopAnchor(erreurLabel, 500.0);
+            AnchorPane.setLeftAnchor(erreurLabel, 285.0);
+            partie.getChildren().add(erreurLabel);
+
+            Button erreurBouton = new Button("OK");
+            erreurBouton.setMaxWidth(400);
+            erreurBouton.setStyle("-fx-text-fill: black;"
+                    + "-fx-font: 25 stencil;"
+                    + "-fx-background-color: lightgrey;"
+                    + "-fx-border-style: solid;"
+                    + "-fx-border-width: 5;"
+                    + "-fx-focus-color: tranparent;"
+                    + "-fx-faint-focus-color: transparent");
+            AnchorPane.setTopAnchor(erreurBouton, 625.0);
+            AnchorPane.setLeftAnchor(erreurBouton, 900.0);
+            erreurBouton.setVisible(false);
+            partie.getChildren().add(erreurBouton);
+
+            confirmer.setOnMouseClicked((e) -> {
+                boolean ok = true;
+
                 for (ImageNavire nav : listeNavires) {
-                    int minX = 10;
-                    int minY = 10;
-                    for (Case cas : nav.cases) {
-                        if (cas.x < minX) {
-                            minX = cas.x;
-                        }
-                        if (cas.y < minY) {
-                            minY = cas.y;
-                        }
+                    if (nav.cases.size() < nav.longueur) {
+                        ok = false;
                     }
-                    partiePrincipale.placerNavire(minX, minY, nav.longueur, nav.tourne);
-                    nav.setMouseTransparent(true);
                 }
-                for (Case btn : intersections) {
-                    btn.setStyle("-fx-text-fill: transparent;"
-                            + "-fx-background-color: transparent;"
-                            + "-fx-border-style: solid;"
-                            + "-fx-border-width: 5;"
-                            + "-fx-border-color: black;"
-                            + "-fx-focus-color: tranparent;"
-                            + "-fx-faint-focus-color: transparent");
-                }
-                for (Case cas : caseAdverses) {
-                    cas.setMouseTransparent(false);
-                }
-                labelInstructions.setVisible(false);
-                confirmer.setVisible(false);
-                labelTour.setVisible(true);
-            } else {
-                erreurLabel.setVisible(true);
-                erreurBouton.setVisible(true);
-                for (ImageNavire nav : listeNavires) {
-                    nav.setMouseTransparent(true);
-                }
-            }
-        });
 
-        scenePartieTemp.setOnKeyReleased((e) -> {
-            if (e.getCode() == KeyCode.SHIFT && bateauSelectionne != null) {
-                RotateTransition rotate = new RotateTransition(Duration.seconds(0.0001), bateauSelectionne);
-                if (bateauSelectionne.tourne) {
-                    rotate.setToAngle(0);
-                    bateauSelectionne.tourne = false;
-                } else {
-                    rotate.setToAngle(90);
-                    bateauSelectionne.tourne = true;
-                }
-                rotate.play();
-                rotate.setOnFinished((f) -> {
-                    Bounds bounds = bateauSelectionne.localToScene(bateauSelectionne.getBoundsInLocal());
-
-                    bateauSelectionne.cases.clear();
-                    testIntersections(bateauSelectionne);
-                    if (!click) {
-                        if (testerCollision(bateauSelectionne)) {
-                            replacerNavire(bateauSelectionne, (bounds.getMaxX() - (bounds.getWidth() / 2)), bounds.getMaxY() - (bounds.getHeight() / 2));
-                        } else {
-                            try {
-                                Robot robot = new Robot();
-
-                                bounds = bateauSelectionne.localToScene(bateauSelectionne.getBoundsInLocal());
-
-                                robot.mouseMove((int) (bounds.getMaxX() - (bounds.getWidth() / 2)), (int) (bounds.getMaxY() - (bounds.getHeight() / 2)));
-                                robot.mousePress(InputEvent.BUTTON1_MASK);
-                                robot.mouseRelease(InputEvent.BUTTON1_MASK);
-                            } catch (Exception ex) {
+                if (ok) {
+                    for (ImageNavire nav : listeNavires) {
+                        int minX = 10;
+                        int minY = 10;
+                        for (Case cas : nav.cases) {
+                            if (cas.x < minX) {
+                                minX = cas.x;
+                            }
+                            if (cas.y < minY) {
+                                minY = cas.y;
                             }
                         }
-                        testIntersections(bateauSelectionne);
+                        partiePrincipale.placerNavire(minX, minY, nav.longueur, nav.tourne);
+                        nav.setMouseTransparent(true);
                     }
-                });
-            }
-        });
+                    for (Case btn : intersections) {
+                        btn.setStyle("-fx-text-fill: transparent;"
+                                + "-fx-background-color: transparent;"
+                                + "-fx-border-style: solid;"
+                                + "-fx-border-width: 5;"
+                                + "-fx-border-color: black;"
+                                + "-fx-focus-color: tranparent;"
+                                + "-fx-faint-focus-color: transparent");
+                    }
+                    for (Case cas : caseAdverses) {
+                        cas.setMouseTransparent(false);
+                    }
+                    labelInstructions.setVisible(false);
+                    confirmer.setVisible(false);
+                    labelTour.setVisible(true);
+                } else {
+                    erreurLabel.setVisible(true);
+                    erreurBouton.setVisible(true);
+                    for (ImageNavire nav : listeNavires) {
+                        nav.setMouseTransparent(true);
+                    }
+                }
+            });
 
-        erreurBouton.setOnMouseReleased((e) -> {
-            erreurLabel.setVisible(false);
-            erreurBouton.setVisible(false);
-            for (ImageNavire nav : listeNavires) {
-                nav.setMouseTransparent(false);
-            }
-        });
+            scenePartieTemp.setOnKeyReleased((e) -> {
+                if (e.getCode() == KeyCode.SHIFT && bateauSelectionne != null) {
+                    RotateTransition rotate = new RotateTransition(Duration.seconds(0.0001), bateauSelectionne);
+                    if (bateauSelectionne.tourne) {
+                        rotate.setToAngle(0);
+                        bateauSelectionne.tourne = false;
+                    } else {
+                        rotate.setToAngle(90);
+                        bateauSelectionne.tourne = true;
+                    }
+                    rotate.play();
+                    rotate.setOnFinished((f) -> {
+                        Bounds bounds = bateauSelectionne.localToScene(bateauSelectionne.getBoundsInLocal());
+
+                        bateauSelectionne.cases.clear();
+                        testIntersections(bateauSelectionne);
+                        if (!click) {
+                            if (testerCollision(bateauSelectionne)) {
+                                replacerNavire(bateauSelectionne, (bounds.getMaxX() - (bounds.getWidth() / 2)), bounds.getMaxY() - (bounds.getHeight() / 2));
+                            } else {
+                                try {
+                                    Robot robot = new Robot();
+
+                                    bounds = bateauSelectionne.localToScene(bateauSelectionne.getBoundsInLocal());
+
+                                    robot.mouseMove((int) (bounds.getMaxX() - (bounds.getWidth() / 2)), (int) (bounds.getMaxY() - (bounds.getHeight() / 2)));
+                                    robot.mousePress(InputEvent.BUTTON1_MASK);
+                                    robot.mouseRelease(InputEvent.BUTTON1_MASK);
+                                } catch (Exception ex) {
+                                }
+                            }
+                            testIntersections(bateauSelectionne);
+                        }
+                    });
+                }
+            });
+
+            erreurBouton.setOnMouseReleased((e) -> {
+                erreurLabel.setVisible(false);
+                erreurBouton.setVisible(false);
+                for (ImageNavire nav : listeNavires) {
+                    nav.setMouseTransparent(false);
+                }
+            });
+        }
 
         return scenePartieTemp;
     }
@@ -900,33 +1048,31 @@ public class InterfaceGraphique extends Application {
             afficherMenu();
         });
     }
-}
+    
+    class ImageNavire extends ImageView {
+        int longueur;
+        double xOrg;
+        double yOrg;
+        boolean bouger;
+        boolean tourne;
+        ArrayList<Case> cases;
 
-class ImageNavire extends ImageView {
-
-    int longueur;
-    double xOrg;
-    double yOrg;
-    boolean bouger;
-    boolean tourne;
-    ArrayList<Case> cases;
-
-    ImageNavire(Image image) {
-        super(image);
-        this.bouger = false;
-        this.tourne = false;
-        this.cases = new ArrayList();
+        ImageNavire(Image image) {
+            super(image);
+            this.bouger = false;
+            this.tourne = false;
+            this.cases = new ArrayList();
+        }
     }
-}
 
-class Case extends Button {
+    class Case extends Button {
+        int x;
+        int y;
 
-    int x;
-    int y;
-
-    Case(int x, int y) {
-        super();
-        this.x = x;
-        this.y = y;
+        Case(int x, int y) {
+            super();
+            this.x = x;
+            this.y = y;
+        }
     }
 }

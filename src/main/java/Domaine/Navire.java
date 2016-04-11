@@ -45,10 +45,6 @@ public class Navire {
         this.casesTouchees = casesTouchees;
     }
 
-    public ArrayList<Case> getCases() {
-        return this.cases;
-    }
-
     public Controleur.Partie.Resultat toucher(Case cas) {
         casesTouchees++;
         if (casesTouchees == longueur) {
@@ -57,7 +53,15 @@ public class Navire {
             return Controleur.Partie.Resultat.TOUCHE;
         }
     }
+    
+    public int getLongueur(){
+        return longueur;
+    }
 
+    public ArrayList<Case> getCases() {
+        return this.cases;
+    }
+    
     public boolean getTourne() {
         return tourne;
     }
