@@ -51,6 +51,7 @@ public class InterfaceGraphique extends Application {
     private static Boolean click = false;
     private static Label labelTour;
     private boolean premierNavire = true;
+    private MenuItem sauvegarderPartie;
 
     final ArrayList<Case> cases = new ArrayList();
     final ArrayList<Case> caseAdverses = new ArrayList();
@@ -422,10 +423,14 @@ public class InterfaceGraphique extends Application {
         Menu menuMenu = new Menu("Menu");
         menuBar.getMenus().add(menuMenu);
 
-        MenuItem sauvegarderPartie = new MenuItem("Sauvegarder la partie");
+        sauvegarderPartie = new MenuItem("Sauvegarder la partie");
         MenuItem menuPrincipal = new MenuItem("Retourner au menu principal");
         MenuItem menuQuitter = new MenuItem("Quitter");
 
+        if(nouvellePartie){
+            sauvegarderPartie.setDisable(true);
+        }
+        
         menuMenu.getItems().addAll(sauvegarderPartie, menuPrincipal, menuQuitter);
 
         partie.getChildren().add(menuBar);
@@ -665,6 +670,7 @@ public class InterfaceGraphique extends Application {
                     labelInstructions.setVisible(false);
                     confirmer.setVisible(false);
                     labelTour.setVisible(true);
+                    sauvegarderPartie.setDisable(false);
                 } else {
                     erreurLabel.setVisible(true);
                     erreurBouton.setVisible(true);
@@ -1016,6 +1022,8 @@ public class InterfaceGraphique extends Application {
         for (Case cas : caseAdverses) {
             cas.setMouseTransparent(true);
         }
+        
+        sauvegarderPartie.setDisable(true);
 
         partie.setMouseTransparent(false);
 
